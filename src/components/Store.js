@@ -1,5 +1,5 @@
-import { useRef, useState, } from 'react';
-import { Box, Button, Flex, Center, Heading, Input, Spacer, Stack, Text, Tag, SimpleGrid, GridItem, Image, Spinner } from "@chakra-ui/react";
+import { /*useRef,*/ useState, } from 'react';
+import { Box, /*Button, Flex,*/ Center, Heading, Input, /*Spacer, Stack,*/ Text, Tag, SimpleGrid, GridItem, Image, Spinner } from "@chakra-ui/react";
 
 import Header from "./Header.js";
 
@@ -39,7 +39,6 @@ function Store({ items, loading }) {
                             let f = items.filter((item) => 
                                 item.title.toLowerCase().includes(e.target.value.toLowerCase())
                             );
-                            console.log("f" ,f);
                             setFilteredItems(f);
                         }} 
                         placeholder="Buscar"
