@@ -1,10 +1,12 @@
-import { /*useRef,*/ useState, } from 'react';
-import { Box, /*Button, Flex,*/ Center, Heading, Input, /*Spacer, Stack,*/ Text, Tag, SimpleGrid, GridItem, Image, Spinner } from "@chakra-ui/react";
+import { useRef, useState, useEffect } from 'react';
+import { Box, Button, Flex, Center, Heading, Input, Spacer, Stack, Text, Tag, SimpleGrid, GridItem, Image, Spinner } from "@chakra-ui/react";
 
 import Header from "./Header.js";
+import { Link } from 'react-router-dom';
+import axios from "axios";
 
 //Muestra de Items
-const StoreItem = ({ title, color, potencia, price, image }) => {
+const StoreItem = ({ id, title, color, potencia, price, image }) => {
     return (
         <Box p={4} borderRadius="lg" borderWidth="1px">
             <Center>
@@ -21,9 +23,19 @@ const StoreItem = ({ title, color, potencia, price, image }) => {
 
 
 //referencias para Ingreso de Items
-function Store({ items, loading }) {
+function Store({  }) {
     //Sistema de Visaluzacion de Items
-    const [filteredItems, setFilteredItems] = useState(items);
+    const [filteredItems, setFilteredItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [storeItem, setStoreItem] = useState([]);
+    
+    useEffect(() => {
+        axios.get('https://my-json-server.typicode.com/carlosmx45/card-jitsu-api/items').then(({data}) => {
+          setLoading(false);
+          setStoreItem(data);
+          setFilteredItems(data)
+        });
+      }, []);
 
     return (
         <Box>
@@ -36,7 +48,7 @@ function Store({ items, loading }) {
                 <Box p={2}>
                     <Input
                         onChange={(e) => {
-                            let f = items.filter((item) => 
+                            let f = storeItems.filter((item) => 
                                 item.title.toLowerCase().includes(e.target.value.toLowerCase())
                             );
                             setFilteredItems(f);
@@ -48,9 +60,11 @@ function Store({ items, loading }) {
                         {filteredItems.map((item) => {
                             return (
                                 <GridItem>
-                                    <StoreItem {...item} />
+                                    <Link to={'/product/${item.id}'}>
+                                        <StoreItem {...item} />
+                                    </Link>
                                 </GridItem>
-                            )
+                            );
                         })}
                     </SimpleGrid>
                 </Box>
